@@ -6,7 +6,7 @@ import { useMoviesLoader } from "../../hooks/useMoviesLoader";
 import { Container, MovieListWrapper } from "./styles";
 
 export const Home: React.FC = () => {
-  const { loading, error, movies } = useMoviesLoader();
+  const { movies } = useMoviesLoader();
   const { addMovie } = useContext(CartContext);
 
   return (

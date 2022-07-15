@@ -12,8 +12,8 @@ import {
 import cartPng from "../../assets/cart.png";
 
 export const Header = () => {
-  const { movies } = useContext(CartContext);
-  const moviesQuantity = movies.length;
+  const { cartItems } = useContext(CartContext);
+  const moviesQuantity = cartItems.length;
 
   return (
     <Container>

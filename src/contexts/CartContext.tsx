@@ -1,49 +1,93 @@
 import React, { createContext, useState } from "react";
 import { Movie } from "../models/movie";
 
+type CartItem = {
+  movie: Movie;
+  quantity: number;
+};
+
 export type CartContextProps = {
-  movies: Movie[];
+  cartItems: CartItem[];
   addMovie: (movie: Movie) => void;
   removeMovie: (movie: Movie) => void;
 };
 
 export const CartContext = createContext({} as CartContextProps);
 
-export const useMovieList = () => {
-  const [movies, setMovies] = useState<Movie[]>([]);
+export const useCartItemList = () => {
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   const addMovie = (movie: Movie) => {
-    setMovies([...movies, movie]);
+    const existingItem = cartItems.find((item) => item.movie.id === movie.id);
+
+    if (existingItem) {
+      const newItems = cartItems.map((cartItem) => {
+        const matchingMovie = cartItem.movie.id === movie.id;
+        if (matchingMovie) {
+          return {
+            ...cartItem,
+            quantity: cartItem.quantity + 1,
+          };
+        } else {
+          return { ...cartItem };
+        }
+      });
+      setCartItems(newItems);
+    } else {
+      const newItem: CartItem = { movie, quantity: 1 };
+      const newItems = [...cartItems, newItem];
+      setCartItems(newItems);
+    }
   };
 
   const removeMovie = (movie: Movie) => {
-    const filteredList = movies.filter(
-      (existingMovie) => existingMovie.id === movie.id
-    );
-    setMovies(filteredList);
+    const existingItem = cartItems.find((item) => item.movie.id === movie.id);
+
+    if (existingItem) {
+      if (existingItem.quantity === 1) {
+        const newItems = cartItems.filter(
+          (cartItem) => cartItem.movie.id !== movie.id
+        );
+        setCartItems(newItems);
+      } else {
+        const newItems = cartItems.map((cartItem) => {
+          if (cartItem.movie.id === movie.id) {
+            return {
+              ...cartItem,
+              quantity: cartItem.quantity - 1,
+            };
+          } else {
+            return { ...cartItem };
+          }
+        });
+        setCartItems(newItems);
+      }
+    }
   };
 
   return {
-    movies,
+    cartItems,
     addMovie,
     removeMovie,
   };
 };
 
 interface CartProviderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
-export const CartProvider: React.FC<CartProviderProps> = ({children}) => {
-  const { movies, addMovie, removeMovie } = useMovieList();
+export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
+  const { cartItems, addMovie, removeMovie } = useCartItemList();
 
   return (
     <CartContext.Provider
       value={{
-        movies,
+        cartItems,
         addMovie,
         removeMovie,
       }}
-    >{children}</CartContext.Provider>
+    >
+      {children}
+    </CartContext.Provider>
   );
 };
