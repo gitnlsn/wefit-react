@@ -8,7 +8,7 @@ describe("useCartItemList", () => {
     const { result } = renderHook(() => useCartItemList());
 
     act(() => {
-      result.current.addMovie({ id: 1 } as Movie);
+      result.current.increaseItem({ id: 1 } as Movie);
     });
 
     expect(result.current.cartItems).toContainEqual({
@@ -21,10 +21,10 @@ describe("useCartItemList", () => {
     const { result } = renderHook(() => useCartItemList());
 
     act(() => {
-      result.current.addMovie({ id: 1 } as Movie);
+      result.current.increaseItem({ id: 1 } as Movie);
     });
     act(() => {
-      result.current.addMovie({ id: 1 } as Movie);
+      result.current.increaseItem({ id: 1 } as Movie);
     });
 
     expect(result.current.cartItems).toContainEqual({
@@ -37,10 +37,10 @@ describe("useCartItemList", () => {
     const { result } = renderHook(() => useCartItemList());
 
     act(() => {
-      result.current.addMovie({ id: 1 } as Movie);
+      result.current.increaseItem({ id: 1 } as Movie);
     });
     act(() => {
-      result.current.addMovie({ id: 2 } as Movie);
+      result.current.increaseItem({ id: 2 } as Movie);
     });
 
     expect(result.current.cartItems.length).toBe(2);
@@ -58,14 +58,14 @@ describe("useCartItemList", () => {
     const { result } = renderHook(() => useCartItemList());
 
     act(() => {
-      result.current.addMovie({ id: 1 } as Movie);
+      result.current.increaseItem({ id: 1 } as Movie);
     });
     act(() => {
-      result.current.addMovie({ id: 2 } as Movie);
+      result.current.increaseItem({ id: 2 } as Movie);
     });
 
     act(() => {
-        result.current.removeMovie({id: 1} as Movie);
+        result.current.decreaseItem({id: 1} as Movie);
     })
 
     expect(result.current.cartItems.length).toBe(1);
@@ -79,14 +79,14 @@ describe("useCartItemList", () => {
     const { result } = renderHook(() => useCartItemList());
 
     act(() => {
-      result.current.addMovie({ id: 1 } as Movie);
+      result.current.increaseItem({ id: 1 } as Movie);
     });
     act(() => {
-      result.current.addMovie({ id: 1 } as Movie);
+      result.current.increaseItem({ id: 1 } as Movie);
     });
 
     act(() => {
-        result.current.removeMovie({id: 1} as Movie);
+        result.current.decreaseItem({id: 1} as Movie);
     })
 
     expect(result.current.cartItems.length).toBe(1);
@@ -95,4 +95,37 @@ describe("useCartItemList", () => {
       quantity: 1,
     });
   });
+
+  it("should remove movie", () => {
+    const { result } = renderHook(() => useCartItemList());
+
+    act(() => {
+      result.current.increaseItem({ id: 1 } as Movie);
+    });
+    act(() => {
+      result.current.increaseItem({ id: 1 } as Movie);
+    });
+
+    act(() => {
+        result.current.removeItem({id: 1} as Movie);
+    })
+
+    expect(result.current.cartItems.length).toBe(0);
+  });
+
+  it('should getTotal', () => {
+    const { result } = renderHook(() => useCartItemList());
+
+    act(() => {
+      result.current.increaseItem({ id: 1, price: 1.00 } as Movie);
+    });
+    act(() => {
+      result.current.increaseItem({ id: 2, price: 2.00 } as Movie);
+    });
+    act(() => {
+      result.current.increaseItem({ id: 2, price: 2.00 } as Movie);
+    });
+
+    expect(result.current.getTotal()).toBe(5)
+  })
 });

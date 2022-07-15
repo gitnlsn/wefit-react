@@ -1,4 +1,5 @@
 import { Movie } from "../../models/movie";
+import { formatCurrency } from "../../utils/formatCurrency";
 import { CartAddButton } from "../CartAddButton";
 import { Container } from "./styles";
 
@@ -12,7 +13,7 @@ export const MovieCard: React.FC<MovieCardProps> = ({ movie, onClickAdd }) => {
     <Container>
       <img className="icon" src={movie.image} alt={movie.title} />
       <h1 className="title">{movie.title}</h1>
-      <p className="price">{`R$ ${Intl.NumberFormat("pt-BR").format(movie.price)}`}</p>
+      <p className="price">{formatCurrency(movie.price)}</p>
       <div className="button-wrapper">
         <CartAddButton onClick={() => onClickAdd(movie)} />
       </div>

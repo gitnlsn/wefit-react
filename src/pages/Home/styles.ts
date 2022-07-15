@@ -1,17 +1,8 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  width: 1440px;
-  height: 800px;
-
-  background-color: #2f2e41;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
 export const MovieListWrapper = styled.div`
+  margin-top: 41px;
+  
   width: 734px;
   height: 629.18px;
 

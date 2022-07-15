@@ -1,16 +1,17 @@
 import React, { useContext } from "react";
 import { Header } from "../../components/Header";
 import { MovieCard } from "../../components/MovieCard";
+import { PageTemplate } from "../../components/PageTemplate.ts";
 import { CartContext } from "../../contexts/CartContext";
 import { useMoviesLoader } from "../../hooks/useMoviesLoader";
-import { Container, MovieListWrapper } from "./styles";
+import { MovieListWrapper } from "./styles";
 
 export const Home: React.FC = () => {
   const { movies } = useMoviesLoader();
-  const { addMovie } = useContext(CartContext);
+  const { increaseItem: addMovie } = useContext(CartContext);
 
   return (
-    <Container>
+    <PageTemplate>
       <Header />
       <MovieListWrapper>
         {movies.map((movie) => (
@@ -19,6 +20,6 @@ export const Home: React.FC = () => {
           </div>
         ))}
       </MovieListWrapper>
-    </Container>
+    </PageTemplate>
   );
 };

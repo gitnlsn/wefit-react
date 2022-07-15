@@ -1,15 +1,17 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useCallback, useState } from "react";
 import { Movie } from "../models/movie";
 
-type CartItem = {
+export type CartItem = {
   movie: Movie;
   quantity: number;
 };
 
 export type CartContextProps = {
   cartItems: CartItem[];
-  addMovie: (movie: Movie) => void;
-  removeMovie: (movie: Movie) => void;
+  increaseItem: (movie: Movie) => void;
+  decreaseItem: (movie: Movie) => void;
+  removeItem: (movie: Movie) => void;
+  getTotal: () => void;
 };
 
 export const CartContext = createContext({} as CartContextProps);
@@ -17,9 +19,8 @@ export const CartContext = createContext({} as CartContextProps);
 export const useCartItemList = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
-  const addMovie = (movie: Movie) => {
+  const increaseItem = (movie: Movie) => {
     const existingItem = cartItems.find((item) => item.movie.id === movie.id);
-
     if (existingItem) {
       const newItems = cartItems.map((cartItem) => {
         const matchingMovie = cartItem.movie.id === movie.id;
@@ -40,15 +41,12 @@ export const useCartItemList = () => {
     }
   };
 
-  const removeMovie = (movie: Movie) => {
+  const decreaseItem = (movie: Movie) => {
     const existingItem = cartItems.find((item) => item.movie.id === movie.id);
 
     if (existingItem) {
       if (existingItem.quantity === 1) {
-        const newItems = cartItems.filter(
-          (cartItem) => cartItem.movie.id !== movie.id
-        );
-        setCartItems(newItems);
+        removeItem(movie);
       } else {
         const newItems = cartItems.map((cartItem) => {
           if (cartItem.movie.id === movie.id) {
@@ -65,10 +63,27 @@ export const useCartItemList = () => {
     }
   };
 
+  const removeItem = (movie: Movie) => {
+    const newItems = cartItems.filter(
+      (cartItem) => cartItem.movie.id !== movie.id
+    );
+    setCartItems(newItems);
+  };
+
+  const getTotal = useCallback(
+    () =>
+      cartItems.reduce((sum, cartItem) => {
+        return sum + cartItem.quantity * cartItem.movie.price;
+      }, 0),
+    [cartItems]
+  );
+
   return {
     cartItems,
-    addMovie,
-    removeMovie,
+    increaseItem,
+    decreaseItem,
+    removeItem,
+    getTotal,
   };
 };
 
@@ -77,14 +92,17 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const { cartItems, addMovie, removeMovie } = useCartItemList();
+  const { cartItems, increaseItem, decreaseItem, removeItem, getTotal } =
+    useCartItemList();
 
   return (
     <CartContext.Provider
       value={{
         cartItems,
-        addMovie,
-        removeMovie,
+        increaseItem,
+        decreaseItem,
+        removeItem,
+        getTotal,
       }}
     >
       {children}
