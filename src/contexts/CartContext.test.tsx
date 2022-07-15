@@ -126,6 +126,38 @@ describe("useCartItemList", () => {
       result.current.increaseItem({ id: 2, price: 2.00 } as Movie);
     });
 
-    expect(result.current.getTotal()).toBe(5)
+    expect(result.current.getTotal()).toBe(3)
+  })
+
+  it('should getTotalPrice', () => {
+    const { result } = renderHook(() => useCartItemList());
+
+    act(() => {
+      result.current.increaseItem({ id: 1, price: 1.00 } as Movie);
+    });
+    act(() => {
+      result.current.increaseItem({ id: 2, price: 2.00 } as Movie);
+    });
+    act(() => {
+      result.current.increaseItem({ id: 2, price: 2.00 } as Movie);
+    });
+
+    expect(result.current.getTotalPrice()).toBe(5)
+  })
+  
+  it('should clearCart', () => {
+    const { result } = renderHook(() => useCartItemList());
+
+    act(() => {
+      result.current.increaseItem({ id: 1, price: 1.00 } as Movie);
+    });
+    act(() => {
+      result.current.increaseItem({ id: 2, price: 2.00 } as Movie);
+    });
+    act(() => {
+      result.current.clearCart();
+    });
+
+    expect(result.current.cartItems.length).toBe(0)
   })
 });

@@ -19,7 +19,7 @@ export const MyCartArea = styled.div`
   height: auto;
   align-items: center;
 
-  img {
+  .cart-icon {
     margin-left: 9.33px;
     width: 29.32px;
     height: 25.31px;

@@ -11,7 +11,9 @@ export type CartContextProps = {
   increaseItem: (movie: Movie) => void;
   decreaseItem: (movie: Movie) => void;
   removeItem: (movie: Movie) => void;
-  getTotal: () => void;
+  clearCart: () => void;
+  getTotal: () => number;
+  getTotalPrice: () => number;
 };
 
 export const CartContext = createContext({} as CartContextProps);
@@ -70,7 +72,16 @@ export const useCartItemList = () => {
     setCartItems(newItems);
   };
 
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
   const getTotal = useCallback(
+    () => cartItems.reduce((total, cartItem) => total + cartItem.quantity, 0),
+    [cartItems]
+  );
+
+  const getTotalPrice = useCallback(
     () =>
       cartItems.reduce((sum, cartItem) => {
         return sum + cartItem.quantity * cartItem.movie.price;
@@ -83,7 +94,9 @@ export const useCartItemList = () => {
     increaseItem,
     decreaseItem,
     removeItem,
+    clearCart,
     getTotal,
+    getTotalPrice,
   };
 };
 
@@ -92,8 +105,15 @@ interface CartProviderProps {
 }
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-  const { cartItems, increaseItem, decreaseItem, removeItem, getTotal } =
-    useCartItemList();
+  const {
+    cartItems,
+    increaseItem,
+    decreaseItem,
+    removeItem,
+    clearCart,
+    getTotal,
+    getTotalPrice
+  } = useCartItemList();
 
   return (
     <CartContext.Provider
@@ -102,7 +122,9 @@ export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
         increaseItem,
         decreaseItem,
         removeItem,
+        clearCart,
         getTotal,
+        getTotalPrice,
       }}
     >
       {children}
