@@ -35,7 +35,6 @@ export const MyCartTextArea = styled.div`
 `;
 
 export const LogoTitle = styled.h3`
-  font-family: "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 27.24px;
@@ -43,7 +42,6 @@ export const LogoTitle = styled.h3`
 `;
 
 export const MyCartTitle = styled.h3`
-  font-family: "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
   font-weight: 600;
   line-height: 19.07px;
@@ -51,7 +49,6 @@ export const MyCartTitle = styled.h3`
 `;
 
 export const ItemsQuantity = styled.h4`
-  font-family: "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 12px;
   font-weight: 600;
   line-height: 16.34px;
