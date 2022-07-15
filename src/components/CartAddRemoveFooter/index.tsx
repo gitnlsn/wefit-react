@@ -1,4 +1,3 @@
-import { CartItem } from "../../contexts/CartContext";
 import { formatCurrency } from "../../utils/formatCurrency";
 import { Button } from "../Button";
 import { Container, HorizontalLine } from "./styles";

@@ -3,11 +3,12 @@ import { CartProvider } from "./contexts/CartContext";
 import { GlobalStyle } from "./GlobalStyles";
 import { CartView } from "./pages/CartView";
 import { Home } from "./pages/Home";
+import { Success } from "./pages/Success";
 
 function App() {
   return (
     <CartProvider>
-      <CartView />
+      <Success />
       <GlobalStyle />
     </CartProvider>
   );

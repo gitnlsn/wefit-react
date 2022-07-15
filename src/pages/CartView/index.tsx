@@ -7,7 +7,6 @@ import { Button } from "../../components/Button";
 import { useCartItemList } from "../../contexts/CartContext";
 import { CardAddRemoveHeader } from "../../components/CartAddRemoveHeader";
 import { CardAddRemoveItem } from "../../components/CartAddRemoveItem";
-import { useEffect } from "react";
 import { CartAddRemoveFooter } from "../../components/CartAddRemoveFooter";
 
 export const CartView: React.FC = () => {
